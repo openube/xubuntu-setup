@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+# install packages needed for system stage scripts
+install axel checkinstall gdebi-core
+
