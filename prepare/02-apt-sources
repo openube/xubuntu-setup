@@ -1,0 +1,15 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+sources_path=/etc/apt/sources.list
+
+# remove few top commentd lines
+sudo perl -0777 -pe "s/^(#.+\n+){3}//" -i $sources_path
+head -1 $sources_path | pcregrep -qM "^# See "
+
+# uncomment partner and extras repositories
+for pattern in "http://archive.canonical.com/.+ partner" "http://extras.ubuntu.com/.+ main"; do
+  sudo perl -pe "s|^# (deb(-src){0,1} $pattern)$|\1|" -i $sources_path
+  [[ `pcregrep -c "$pattern" $sources_path` == 2 ]]
+done
+
