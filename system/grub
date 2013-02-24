@@ -1,0 +1,25 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+default_path=/etc/default/grub
+linux_path=/etc/grub.d/10_linux
+
+md5-check $default_path $linux_path
+
+# disable OS prober
+name=GRUB_DISABLE_OS_PROBER
+value=true
+if ! pcregrep -q "^$name=" $default_path; then
+  echo -e "\n$name=$value\n" | sudo tee -a $default_path 1>/dev/null
+fi
+pcregrep -q "^$name=$value$" $default_path
+
+# disable vt.handoff for some video cards
+# SOURCE: http://byobu.info/wiki/Changing_Plymouth_Resolution_in_Ubuntu#Disable_the_vt.handoff.3D7_parameter
+name=GRUB_CMDLINE_LINUX_DEFAULT
+sudo perl -pe "s/(\s$name)=\"(\\\$$name) \\\\\\\$vt_handoff\"/\1=\"\2\"/" -i $linux_path
+pcregrep -q "\s$name=\"\\\$$name\"" $linux_path
+
+# update grub if config was changed
+md5-changed && sudo update-grub || true
+
