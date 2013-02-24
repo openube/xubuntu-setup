@@ -1,0 +1,16 @@
+#!/bin/bash -eu
+path=${1:?Argument path is required}
+
+if [[ ! -f "$path" ]]; then
+  cat > "$path" <<EOF
+#!/bin/bash -eu
+. \`dirname \$0\`/../library/script
+
+
+
+EOF
+fi
+chmod +x "$path"
+
+vim +4 "$path"
+

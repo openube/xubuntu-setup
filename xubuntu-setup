@@ -1,0 +1,61 @@
+#!/bin/bash -eu
+stages=(prepare system)
+
+# check stage argument
+stage=${1:-}
+if [[ -n $stage ]]; then
+  is_found=; for s in ${stages[@]}; do if [[ $stage == $s ]]; then is_found=1; fi; done
+  [[ -z $is_found ]] && { echo "Unknown stage $stage"; exit 2; }
+fi
+
+# output underlined text
+heading() {
+  text=$*
+  echo $text
+  length=${#text}
+  eval "printf '=%.0s' {1..$length}"
+  echo
+}
+
+# run scripts from directory
+run-scripts() {
+  dir=$1
+  for p in "`dirname $0`"/$dir/*; do
+    heading $p
+    $p
+    echo -e "Done\n"
+  done
+}
+
+# execute actions on exit
+on-exit() {
+  status=$?
+
+  if [[ $status == 0 ]]; then
+    # ask for reboot
+    read -p "Reboot? (Y/n): "
+    [[ -z $REPLY || $REPLY == [Yy] ]] && sudo reboot
+  fi
+
+  exit $status
+}
+trap on-exit EXIT
+
+# main
+case $stage in
+  '')
+    # run scripts from all stages
+    for s in ${stages[@]}; do run-scripts $s; done
+
+    # ask to remove .netrc
+    netrc_path=~/.netrc
+    read -p "Remove `basename $netrc_path`? (Y/n): "
+    [[ -z $REPLY || $REPLY == [Yy] ]] && rm $netrc_path || true
+    ;;
+
+  *)
+    # run scripts from one particular stage
+    run-scripts $stage
+    ;;
+esac
+

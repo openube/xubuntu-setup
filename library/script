@@ -1,0 +1,110 @@
+# vim: set ft=sh :
+# change working directory
+cd /tmp
+
+# silent wrappers for pushd and popd
+pushd() {
+  builtin pushd "$@" 1>/dev/null
+}
+popd() {
+  builtin popd "$@" 1>/dev/null
+}
+
+# execute actions on exit
+on-exit() {
+  status=$?
+
+  # warn about not successful status
+  [[ $status != 0 ]] && echo "Script `basename $0` exited with status $status"
+
+  exit $status
+}
+trap on-exit EXIT
+
+# install packages silently if they were not installed already
+install() {
+  packages=
+  options=
+  for arg in $@; do
+    if [[ $arg == -* ]]; then
+      options="$options $arg"
+    else
+      version=`dpkg-query -W -f '${Version}' $arg 2>/dev/null || true`
+      [[ -z $version ]] && packages="$packages $arg"
+    fi
+  done
+  [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install -y $options $packages || true
+}
+
+# purge packages silently only if they are installed
+uninstall() {
+  packages=""
+  for p in $@; do
+    version=`dpkg-query -W -f '${Version}' $p 2>/dev/null || true`
+    [[ -n $version ]] && packages="$packages $p"
+  done
+  if [[ -n $packages ]]; then
+    sudo apt-get purge -y $packages
+    sudo apt-get autoremove -qq --purge
+  fi
+}
+
+# add PPA source silently if it was not added already
+add-ppa() {
+  ppa=$1
+  list_path=/etc/apt/sources.list.d/${ppa//\//-}-`lsb_release -sc`.list
+  if [[ ! -f $list_path ]]; then
+    sudo add-apt-repository -y ppa:$ppa
+    # update packages from added repository only
+    sudo apt-get update -o Dir::Etc::sourcelist="$list_path" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" 
+  fi
+}
+
+# download the file using axel if it was not downloaded already
+download() {
+  url=$1
+  md5=$2
+  basename=`basename "$url"`
+  output=${3:-$basename}
+
+  if [[ ! -f "$output" || `md5sum "$output" | cut -d' ' -f1` != "$md5" ]]; then
+    rm -f "$output"
+
+    case ${engine:-} in
+      wget) download_cmd="wget -O" ;;
+      '') download_cmd="axel -a -n3 -o" ;;
+    esac
+    $download_cmd "$output" "$url"
+  fi
+}
+
+# check md5 sums of files for latter usage
+md5_paths=
+md5_sum=
+md5-check() {
+  [[ $# > 0 ]] && md5_paths=("$@")
+  md5_sum=`md5sum "${md5_paths[@]}" 2>/dev/null || true`
+}
+
+# check if md5 sums of previously checked files were changed
+md5-changed() {
+  prev_md5_sum="$md5_sum"
+  md5-check
+  [[ "$prev_md5_sum" != "$md5_sum" ]]
+}
+
+# write stdin to file as root
+write-file() {
+  path=$1
+  sudo_cmd="sudo -u ${user:-root}"
+  dir=`dirname "$path"`
+  $sudo_cmd mkdir -p "$dir"
+  $sudo_cmd tee "$path" 1>/dev/null
+  [[ -n ${executable:-} ]] && $sudo_cmd chmod +x "$path" || true
+}
+
+# write stdin to executable file as root
+write-script() {
+  executable=1 write-file "$@"
+}
+
