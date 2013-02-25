@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-. `dirname $0`/../library/script
-
-# enable autologin for LightDM since we have encrypted filesystem that require to enter passphrase on boot
-sudo /usr/lib/lightdm/lightdm-set-defaults --autologin $USER
-
