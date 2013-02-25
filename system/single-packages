@@ -4,8 +4,10 @@
 # single packages that do not require any hacks, dependencies, etc.
 packages="
 wmctrl
+xdotool
 beep
 w3m
+kupfer
 "
 
 for p in `echo $packages`; do install $p; done
