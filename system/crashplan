@@ -3,7 +3,8 @@
 
 crashplan_url=http://download.crashplan.com/installs/linux/install/CrashPlan/CrashPlan_3.4.1_Linux.tgz
 crashplan_md5=444ba4d6e5194472791dd377f561f00c
-service_path=/usr/local/crashplan/conf/my.service.xml
+service_name=crashplan
+config_path=/usr/local/crashplan/conf/my.service.xml
 cache_dir=/run/shm/crashplan/cache
 
 install openjdk-7-jre
@@ -38,8 +39,15 @@ if [[ ! -x /usr/local/bin/CrashPlanDesktop ]]; then
   popd
 fi
 
+# start CrashPlan daemon if it is not running
+[[ `service crashplan status` != *" is running." ]] && sudo service crashplan start
+
+# wait until CrashPlan daemon will create config file
+[[ ! -f $config_path ]] && echo "Waiting for CrashPlan daemon..."
+while [[ ! -f $config_path ]]; do sleep 1; done
+
 # change cache location
 name=cachePath
-sudo perl -pe "s|(<$name>).+?(</$name>)|\1$cache_dir\2|" -i $service_path
-pcregrep -q "<$name>$cache_dir</$name>" $service_path
+sudo perl -pe "s|(<$name>).+?(</$name>)|\1$cache_dir\2|" -i $config_path
+pcregrep -q "<$name>$cache_dir</$name>" $config_path
 
