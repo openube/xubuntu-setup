@@ -5,6 +5,7 @@ chrome_url=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64
 chrome_md5=7d6314969c8ccc812da509c7750959f6
 
 install libnss3-tools # certificate management command-line tools
+install gnome-icon-theme-full # for displaying correct file type icons
 
 if [[ ! -x /usr/bin/google-chrome ]]; then
   # download and install Google Chrome package
