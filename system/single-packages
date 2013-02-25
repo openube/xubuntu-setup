@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+# single packages that do not require any hacks, dependencies, etc.
+packages="
+wmctrl
+"
+
+for p in `echo $packages`; do install $p; done
+
