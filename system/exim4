@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+conf_name=update-exim4.conf
+conf_path=/etc/exim4/$conf_name.conf
+
+install exim4
+
+# change config type to internet
+name=dc_eximconfig_configtype
+value=internet
+sudo perl -pe "s/^($name)='.+'$/\1='$value'/" -i $conf_path
+pcregrep -q "^$name='$value'$" $conf_path
+
+# reconfigure exim4
+sudo $conf_name
+
