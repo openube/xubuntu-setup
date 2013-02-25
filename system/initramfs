@@ -1,0 +1,22 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+fix_path=/usr/share/initramfs-tools/hooks/evms-activate-fix
+
+md5-check $fix_path
+
+# workaround for evms_activate boot error
+write-script $fix_path <<EOF
+#!/bin/sh
+. /usr/share/initramfs-tools/hook-functions
+
+# create fake evms_activte executable to workaround the volatile boot error
+exec_path=/sbin/evms_activate
+[ ! -f \$exec_path ] && { touch \$exec_path; chmod +x \$exec_path; }
+copy_exec \$exec_path
+
+EOF
+
+# update initramfs if needed
+md5-changed && sudo update-initramfs -u || true
+
