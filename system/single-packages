@@ -4,6 +4,8 @@
 # single packages that do not require any hacks, dependencies, etc.
 packages="
 wmctrl
+beep
+w3m
 "
 
 for p in `echo $packages`; do install $p; done
