@@ -1,0 +1,11 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+default_path=/etc/default/avahi-daemon
+
+# disable .local domain check at startup
+name=AVAHI_DAEMON_DETECT_LOCAL
+value=0
+sudo perl -pe "s/^($name)=\d$/\1=$value/" -i $default_path
+pcregrep -q "^$name=$value$" $default_path
+
