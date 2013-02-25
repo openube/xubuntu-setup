@@ -1,0 +1,45 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+crashplan_url=http://download.crashplan.com/installs/linux/install/CrashPlan/CrashPlan_3.4.1_Linux.tgz
+crashplan_md5=444ba4d6e5194472791dd377f561f00c
+service_path=/usr/local/crashplan/conf/my.service.xml
+cache_dir=/run/shm/crashplan/cache
+
+install openjdk-7-jre
+
+if [[ ! -x /usr/local/bin/CrashPlanDesktop ]]; then
+  # download and unpack installer
+  download $crashplan_url $crashplan_md5
+  tar xzf `basename $crashplan_url`
+  
+  pushd CrashPlan-install
+    install_path=./install.sh
+  
+    # non-interactive EULA agreement
+    eula_cmd="more ./EULA.txt"
+    perl -pe "s|^($eula_cmd)$|# \1|" -i $install_path
+    pcregrep -q "^# $eula_cmd$" $install_path
+    name=agreed
+    perl -pe "s/^($name)=0$/\1=1/" -i $install_path
+    pcregrep -q "^$name=1$" $install_path
+  
+    # install non-interactively
+    yes '' | DISPLAY= $install_path
+  
+    # create the .desktop entry
+    rm -f ~/Desktop/CrashPlan.desktop
+    desktop_path=/usr/share/applications/crashplan.desktop
+    sudo cp ./scripts/CrashPlan.desktop $desktop_path
+    name=Categories
+    categories="System;"
+    sudo perl -pe "s/^($name)=.+$/\1=$categories/" -i $desktop_path
+    pcregrep -q "^$name=$categories$" $desktop_path
+  popd
+fi
+
+# change cache location
+name=cachePath
+sudo perl -pe "s|(<$name>).+?(</$name>)|\1$cache_dir\2|" -i $service_path
+pcregrep -q "<$name>$cache_dir</$name>" $service_path
+
