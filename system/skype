@@ -1,6 +1,36 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
+apparmor_path=/etc/apparmor.d/usr.bin.skype
+
 install skype
 install gtk2-engines-murrine:i386 gtk2-engines-pixbuf:i386 # for rendering Gtk theme
+
+# add AppArmor profile for preventing using of sni-qt
+if [[ ! -f $apparmor_path ]]; then
+  write-file $apparmor_path <<EOF
+#include <tunables/global>
+
+/usr/bin/skype {
+  #include <abstractions/X>
+  #include <abstractions/audio>
+  #include <abstractions/base>
+  #include <abstractions/dbus-session>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/kde>
+  #include <abstractions/nameservice>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+
+  # deny read access to the sni-qt libraries, thus removing the panel icon
+  deny /usr/lib/i386-linux-gnu/qt4/plugins/systemtrayicon/libsni-qt.so r,
+  deny /usr/lib/x86_64-linux-gnu/qt4/plugins/systemtrayicon/libsni-qt.so r,
+
+  /** mrwkl,
+}
+
+EOF
+  sudo service apparmor reload
+fi
 
