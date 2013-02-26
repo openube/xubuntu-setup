@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+install skype
+install gtk2-engines-murrine:i386 gtk2-engines-pixbuf:i386 # for rendering Gtk theme
+
