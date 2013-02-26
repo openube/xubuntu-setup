@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+install atool
+install unzip rar unrar p7zip cabextract # archivers and unarchivers
+
