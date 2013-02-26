@@ -9,6 +9,8 @@ beep
 w3m
 kupfer
 keepassx
+qt4-qtconfig
+skype
 "
 
 for p in `echo $packages`; do install $p; done
