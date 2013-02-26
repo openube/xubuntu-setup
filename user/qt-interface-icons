@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+gconftool -t bool -s /desktop/gnome/interface/buttons_have_icons true
+gconftool -t bool -s /desktop/gnome/interface/menus_have_icons true
+
