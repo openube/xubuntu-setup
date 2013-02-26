@@ -1,6 +1,16 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
+skype4pidgin_url=http://eion.robbmob.com/skype4pidgin.deb
+skype4pidgin_md5=964ef2bae9c2e6cda70096a75466d120
+
+# install Gnome Keyring Plugin
 add-ppa pidgin-gnome-keyring/ppa
 install pidgin-gnome-keyring
+
+if [[ ! -f /usr/lib/purple-2/libskype.so ]]; then
+  # download and install Skype API Plugin
+  download $skype4pidgin_url $skype4pidgin_md5
+  sudo dpkg -i `basename $skype4pidgin_url`
+fi
 
