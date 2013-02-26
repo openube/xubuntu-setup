@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+keyfuzz_url=http://0pointer.de/lennart/projects/keyfuzz/keyfuzz-0.2.tar.gz
+keyfuzz_md5=dffcc16ffd68988fafe7365f1124517d
+
+if [[ ! -x /usr/local/sbin/keyfuzz ]]; then
+  # download and extract keyfuzz source
+  download $keyfuzz_url $keyfuzz_md5
+  tar xzf `basename $keyfuzz_url`
+  
+  pushd keyfuzz-*
+    # compile and install keyfuzz
+    ./configure --disable-lynx
+    make
+    sudo checkinstall -y
+  popd
+fi
+
