@@ -7,6 +7,7 @@ install skype
 install gtk2-engines-murrine:i386 gtk2-engines-pixbuf:i386 # for rendering Gtk theme
 
 # add AppArmor profile for preventing using of sni-qt
+# SOURCE: http://askubuntu.com/a/149827
 if [[ ! -f $apparmor_path ]]; then
   write-file $apparmor_path <<EOF
 #include <tunables/global>
