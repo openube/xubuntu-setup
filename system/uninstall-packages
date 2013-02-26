@@ -5,6 +5,11 @@
 packages="
 thunderbird
 ibus
+onboard
+orage
+gnome-sudoku
+simple-scan
+xchat
 "
 
 for p in `echo $packages`; do uninstall $p; done
