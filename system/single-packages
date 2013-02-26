@@ -8,6 +8,7 @@ xdotool
 beep
 w3m
 kupfer
+keepassx
 "
 
 for p in `echo $packages`; do install $p; done
