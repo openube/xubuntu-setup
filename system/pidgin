@@ -11,6 +11,6 @@ install pidgin-gnome-keyring
 if [[ ! -f /usr/lib/purple-2/libskype.so ]]; then
   # download and install Skype API Plugin
   download $skype4pidgin_url $skype4pidgin_md5
-  sudo dpkg -i `basename $skype4pidgin_url`
+  sudo gdebi -n `basename $skype4pidgin_url`
 fi
 
