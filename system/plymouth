@@ -8,7 +8,7 @@ backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
 install plymouth-theme-ubuntu-logo
 uninstall plymouth-theme-xubuntu-{logo,text}
 
-# fix the path to background for LightDM referenced to Xubuntu plymouth logo theme
+# fix the path to background for LightDM referenced to Xubuntu plymouth background
 name=background
 sudo perl -pe "s|^($name)=.+$|\1=$backdrop_path|" -i $greeter_path
 pcregrep -q "^$name=$backdrop_path$" $greeter_path
