@@ -2,10 +2,8 @@
 netrc_path=~/.netrc
 gitconfig_path=~/.gitconfig
 ssh_dir=~/.ssh
-local_dir=~/.local
-mysql_password_path=$local_dir/var/mysql-password
-src_dir=$local_dir/src
 repo_url=https://github.com/sgtpep/xubuntu-setup
+src_dir=~/.local/src/`basename $repo_url`
 
 if [[ ! -f $netrc_path && ! -d $ssh_dir ]]; then
   # prompt for GitHub auth credentials
@@ -40,26 +38,13 @@ if [[ ! -f $gitconfig_path ]]; then
 EOF
 fi
 
-if [[ ! -f $mysql_password_path ]]; then
-  # prompt for MySQL root password
-  read -sp "MySQL root password: " mysql_password
-  echo
-
-  # store MySQL root password for future usage
-  mkdir -p `dirname $mysql_password_path`
-  echo "$mysql_password" | sudo tee $mysql_password_path 1>/dev/null
-  sudo chmod go-r $mysql_password_path
-fi
-
 # install required packages
 sudo apt-get install -y vim git
 
 # clone repo to source directory
 repo_name=`basename $repo_url`
-if [[ ! -d $src_dir/$repo_name ]]; then
-  mkdir -p $src_dir
-  cd $src_dir
-  git clone $repo_url
-  echo "Repository $repo_name was cloned to ${src_dir/$HOME/~}/$repo_name"
+if [[ ! -d $src_dir ]]; then
+  git clone $repo_url $src_dir
+  echo "Repository $repo_name was cloned to ${src_dir/$HOME/~}"
 fi
 
