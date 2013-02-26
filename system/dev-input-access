@@ -1,0 +1,18 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+rules_path=/etc/udev/rules.d/10-input.rules
+group=input
+
+# create group input and add user to it
+sudo groupadd -f $group
+sudo adduser $USER $group
+
+# create udev rule for allowing access to input events for users from group input and reload rules
+write-file $rules_path <<EOF
+KERNEL=="event*", NAME="input/%k", MODE="660", GROUP="$group"
+KERNEL=="js*", NAME="input/%k", MODE="664", GROUP="$group"
+
+EOF
+sudo udevadm control --reload-rules
+
