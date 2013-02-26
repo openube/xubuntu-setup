@@ -11,6 +11,8 @@ kupfer
 keepassx
 qt4-qtconfig
 ack-grep
+aspell-ru
+geary
 "
 
 for p in `echo $packages`; do install $p; done
