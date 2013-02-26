@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+install gnome-disk-utility
+install gnome-icon-theme-symbolic # SOURCE: https://bugs.launchpad.net/ubuntu/+source/gnome-disk-utility/+bug/1071042
+
