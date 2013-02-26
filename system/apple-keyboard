@@ -1,0 +1,49 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+conf_path=/etc/modprobe.d/hid_apple.conf
+script_path=/usr/sbin/remap-apple-keyboard
+keyfuzz_path=/etc/keyfuzz/apple-keyboard.keyfuzz
+rules_path=/etc/udev/rules.d/10-apple-keyboard.rules
+
+# pass options to hid_apple module and rebuild initramfs if needed
+md5-check $conf_path
+write-file $conf_path <<EOF
+options hid_apple fnmode=2
+
+EOF
+md5-changed && sudo update-initramfs -u || true
+
+# create script that runs keyfuzz for Apple keyboards
+# SOURCE: https://aur.archlinux.org/packages.php?ID=57000
+write-script $script_path <<EOF
+#!/bin/sh
+for p in /dev/input/by-id/usb-Apple_Inc._Apple_*-event-kbd; do
+  keyfuzz -s -d \$p < $keyfuzz_path
+done
+
+EOF
+
+# create keyfuzz mapping for Apple keyboards
+sudo mkdir -p `dirname $keyfuzz_path`
+write-file $keyfuzz_path <<EOF
+# L-Alt to L-Super
+458978 125
+# L-Super to L-Alt
+458979 56
+# R-Alt to Menu
+458982 127
+# R-Super to R-Alt
+458983 100
+# Eject to Delete
+786616 111
+
+EOF
+
+# create udev rule that triggers script for Apple keyboards and reload rules
+write-file $rules_path <<EOF
+SUBSYSTEMS=="usb", ATTRS{product}=="Apple Internal Keyboard / Trackpad", ACTION=="add", RUN+="$script_path"
+
+EOF
+sudo udevadm control --reload-rules
+
