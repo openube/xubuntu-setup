@@ -1,5 +1,11 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-uninstall thunderbird
+# preinstalled packaged to remove
+packages="
+thunderbird
+ibus
+"
+
+for p in `echo $packages`; do uninstall $p; done
 
