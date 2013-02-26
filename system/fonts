@@ -1,0 +1,8 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+# accept Microsoft fonts license and download fonts
+# SOURCE: http://askubuntu.com/a/25614
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+install ttf-mscorefonts-installer
+
