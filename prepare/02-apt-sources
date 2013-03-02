@@ -4,8 +4,9 @@
 sources_path=/etc/apt/sources.list
 
 # remove few top commentd lines
-sudo perl -0777 -pe "s/^(#.+\n+){3}//" -i $sources_path
-head -1 $sources_path | pcregrep -qM "^# See "
+start="# See "
+sudo perl -0777 -pe "s/^(?:#.+\n+)+\n($start)/\1/" -i $sources_path
+head -1 $sources_path | pcregrep -qM "^$start"
 
 # uncomment partner and extras repositories
 for pattern in "http://archive.canonical.com/.+ partner" "http://extras.ubuntu.com/.+ main"; do
