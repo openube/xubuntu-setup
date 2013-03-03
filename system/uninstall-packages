@@ -4,7 +4,7 @@
 # preinstalled packaged to remove
 packages="
 thunderbird
-ibus
+ibus ibus-gtk ibus-gtk3
 onboard
 orage
 gnome-sudoku
