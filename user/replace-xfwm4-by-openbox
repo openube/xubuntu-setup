@@ -3,13 +3,9 @@
 
 xml_path=~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
 
-#       <property name="Client0_Command" type="array">
-#         <value type="string" value="xfwm4"/>
-#       </property>
-
 tag=property
 name="Client0_Command"
-value_tag="<value type=\"string\" value=\"openbox-session\"/>"
+value_tag="<value type=\"string\" value=\"openbox\"/>"
 perl -0777 -pe "s|(<$tag name=\"$name\") .+?(/>\|</$tag>)|\1 type=\"array\">\n        $value_tag|s" -i $xml_path
 pcregrep -qM "<$tag name=\"$name\" type=\"array\">\s+$value_tag\s+</$tag>" $xml_path
 
