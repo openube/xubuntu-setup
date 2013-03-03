@@ -10,6 +10,7 @@ orage
 gnome-sudoku
 simple-scan
 xchat
+alacarte
 "
 
 for p in `echo $packages`; do uninstall $p; done
