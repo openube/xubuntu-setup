@@ -12,7 +12,7 @@ keepassx
 qt4-qtconfig
 ack-grep
 aspell-ru
-geary
+trayer
 "
 
 for p in `echo $packages`; do install $p; done
