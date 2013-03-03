@@ -1,0 +1,15 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+pkla_path=/etc/polkit-1/localauthority/50-local.d/com.ubuntu.desktop.pkla
+
+# allow hibernation
+# SOURCE: http://www.ubuntuvibes.com/2012/04/hibernation-disabled-by-default-in.html
+write-file pkla_path <<EOF
+[Re-enable hibernate by default]
+Identity=unix-user:*
+Action=org.freedesktop.upower.hibernate
+ResultActive=yes
+
+EOF
+
