@@ -11,6 +11,8 @@ gnome-sudoku
 simple-scan
 xchat
 alacarte
+xfce4-notes
+parole
 "
 
 for p in `echo $packages`; do uninstall $p; done
