@@ -2,5 +2,6 @@
 . `dirname $0`/../library/script
 
 install i3lock
+install xautolock
 uninstall xscreensaver xscreensaver-data xscreensaver-gl
 
