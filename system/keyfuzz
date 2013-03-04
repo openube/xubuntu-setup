@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-keyfuzz_url=http://0pointer.de/lennart/projects/keyfuzz/keyfuzz-0.2.tar.gz
+keyfuzz_url=https://github.com/sgtpep/xubuntu-setup/blob/master/vendor/keyfuzz-0.2.tar.gz
 keyfuzz_md5=dffcc16ffd68988fafe7365f1124517d
 
 if [[ ! -x /usr/local/sbin/keyfuzz ]]; then
