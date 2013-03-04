@@ -1,15 +1,7 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-greeter_path=/etc/lightdm/lightdm-gtk-greeter.conf
-backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
-
 # replace Xubuntu plymouth logo theme by Ubuntu one
 install plymouth-theme-ubuntu-logo
 uninstall plymouth-theme-xubuntu-{logo,text}
-
-# fix the path to background for LightDM referenced to Xubuntu plymouth background
-name=background
-sudo perl -pe "s|^($name)=.+$|\1=$backdrop_path|" -i $greeter_path
-pcregrep -q "^$name=$backdrop_path$" $greeter_path
 

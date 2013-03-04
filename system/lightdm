@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+conf_path=/etc/lightdm/lightdm.conf
+greeter_path=/etc/lightdm/lightdm-gtk-greeter.conf
+backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
+
+# disable autologin
+name=autologin-user
+sudo perl -0777 -pe "s/\n$name=.+\n/\n/" -i $conf_path
+! pcregrep "^$name=.+$" $conf_path
+
+# fix the path to background referenced to Xubuntu plymouth background
+name=background
+sudo perl -pe "s|^($name)=.+$|\1=$backdrop_path|" -i $greeter_path
+pcregrep -q "^$name=$backdrop_path$" $greeter_path
+
