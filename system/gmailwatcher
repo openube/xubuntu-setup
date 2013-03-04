@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-. `dirname $0`/../library/script
-
-add-ppa loneowais/gmailwatcher.dev
-install gmailwatcher
-
