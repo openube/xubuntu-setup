@@ -33,7 +33,9 @@ install() {
       [[ -z $version ]] && packages="$packages $arg"
     fi
   done
-  [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install -y $options $packages || true
+  args=
+  [[ -n $NON_INTERACTIVE ]] && args="-y"
+  [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install $args $options $packages || true
 }
 
 # purge packages silently only if they are installed
@@ -44,7 +46,9 @@ uninstall() {
     [[ -n $version ]] && packages="$packages $p"
   done
   if [[ -n $packages ]]; then
-    sudo apt-get purge -y $packages
+    args=
+    [[ -n $NON_INTERACTIVE ]] && args="-y"
+    sudo apt-get purge $args $packages
     sudo apt-get autoremove -qq --purge
   fi
 }

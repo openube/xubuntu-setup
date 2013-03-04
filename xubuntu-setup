@@ -22,7 +22,7 @@ run-scripts() {
   dir=$1
   for p in "`dirname $0`"/$dir/*; do
     heading $p
-    $p
+    NON_INTERACTIVE=1 $p
     echo -e "Done\n"
   done
 }
