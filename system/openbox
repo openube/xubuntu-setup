@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-. `dirname $0`/../library/script
-
-install openbox
-
