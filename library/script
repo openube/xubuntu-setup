@@ -34,7 +34,7 @@ install() {
     fi
   done
   args=
-  [[ -n $NON_INTERACTIVE ]] && args="-y"
+  [[ -n ${NON_INTERACTIVE:-} ]] && args="-y"
   [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install $args $options $packages || true
 }
 
@@ -47,7 +47,7 @@ uninstall() {
   done
   if [[ -n $packages ]]; then
     args=
-    [[ -n $NON_INTERACTIVE ]] && args="-y"
+    [[ -n ${NON_INTERACTIVE:-} ]] && args="-y"
     sudo apt-get purge $args $packages
     sudo apt-get autoremove -qq --purge
   fi
