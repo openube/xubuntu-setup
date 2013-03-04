@@ -13,6 +13,7 @@ qt4-qtconfig
 ack-grep
 aspell-ru
 trayer
+aptitude
 "
 
 for p in `echo $packages`; do install $p; done
