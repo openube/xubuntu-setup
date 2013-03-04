@@ -3,6 +3,7 @@
 
 # single packages that do not require any hacks, dependencies, etc.
 packages="
+openbox
 wmctrl
 xdotool
 beep
