@@ -1,21 +1,57 @@
 #!/bin/bash -eu
+# install single packages that do not require any hacks, dependencies, etc.
+
 . `dirname $0`/../library/script
 
-# single packages that do not require any hacks, dependencies, etc.
 packages="
-openbox
+# libraries
+aspell-ru
+
+# Xorg utils
+xxkb
+unclutter
 wmctrl
 xdotool
+mesa-utils
+xsel
+
+# CLI soft
+vim
+git
+ranger
+htop
+ack-grep
+exfat-utils
+colordiff
+inotify-tools
+realpath
 beep
 w3m
+aptitude
+ncdu
+iotop
+
+# GUI soft
+dconf-tools
+openbox
 kupfer
 keepassx
 qt4-qtconfig
-ack-grep
-aspell-ru
 trayer
-aptitude
+sxiv
+seahorse
+gconf-editor
+sqlitebrowser
+meld
+gimp
+mysql-workbench
+vlc
+shutter
 "
 
+# strip out comments
+packages=`grep -v "^#" <<< "$packages"`
+
+# install packages one by one
 for p in `echo $packages`; do install $p; done
 
