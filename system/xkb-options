@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+default_path=/etc/default/keyboard
+xkb_options="grp:alt_shift_toggle grp_led:caps"
+
+md5-check $default_path
+
+# change Xkb options
+name=XKBOPTIONS
+for option in $xkb_options; do
+  IFS=: read key value <<< "$option"
+  sudo perl -pe "s/^($name)=\"(|.+,)$key:[^,\"]+(.*)\"$/\1=\"\2$key:$value\3\"/" -i $default_path
+  pcregrep -q "^$name=\"(|.+,)$option(|,.+)\"$" $default_path
+done
+
+# reconfigure keyboard-configuration package if config was changed
+md5-changed && sudo dpkg-reconfigure -f noninteractive keyboard-configuration || true
+
