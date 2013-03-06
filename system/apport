@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+default_path=/etc/default/apport
+
+name=enabled
+value=0
+sudo perl -pe "s/^($name)=\d$/\1=$value/" -i $default_path
+pcregrep -q "^$name=$value$" $default_path
+
