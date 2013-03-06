@@ -3,7 +3,6 @@
 
 crashplan_url=http://download.crashplan.com/installs/linux/install/CrashPlan/CrashPlan_3.4.1_Linux.tgz
 crashplan_md5=444ba4d6e5194472791dd377f561f00c
-service_name=crashplan
 config_glob="/usr/local/crashplan/conf/*.service.xml"
 cache_dir=/run/shm/crashplan/cache
 
