@@ -2,19 +2,26 @@
 . `dirname $0`/../library/script
 
 name=clean-tty
-init_path=/etc/init.d/$name
-rc0_path=/etc/rc0.d/K00$name
-rc2_path=/etc/rc2.d/S99$name
-rc6_path=/etc/rc6.d/K00$name
+initd_path=/etc/init.d/$name
+start_runlevels=2
+stop_runlevels="0 6"
 
-# create init.d script for cleaning TTYs on various init stages
-write-script $init_path <<EOF
+# create init.d script for cleaning visible TTYs on boot and shutdown
+write-script $initd_path <<EOF
 #!/bin/sh
-for i in 7 8; do printf '\033c\033[?25l\033[30m' > /dev/tty\$i; done
+### BEGIN INIT INFO
+# Provides:          $name
+# Required-Start:
+# Required-Stop:
+# Default-Start:     $start_runlevels
+# Default-Stop:      $stop_runlevels
+# Short-Description: Clean visible TTYs on boot and shutdown
+### END INIT INFO
+
+for i in 7 8; do printf '\\033c\\033[?25l\\033[30m' > /dev/tty\$i; done
 
 EOF
 
-# create symlinks in rc dirs to init.d script
-source=${init_path/\/etc/..}
-for target in $rc0_path $rc2_path $rc6_path; do sudo ln -sf $source $target; done
+# update rc.d
+sudo update-rc.d $name stop 00 $stop_runlevels . start 99 $start_runlevels .
 
