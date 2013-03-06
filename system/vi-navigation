@@ -1,0 +1,170 @@
+#!/bin/bash -eu
+# modify typo layout for vi-like navigation
+# SOURCE: http://www.spinics.net/lists/xorg/msg35931.html
+
+. `dirname $0`/../library/script
+
+default_path=/etc/default/keyboard
+typo_path=/usr/share/X11/xkb/symbols/typo
+basic_path=/usr/share/X11/xkb/types/basic
+setupcon_path=/bin/setupcon
+
+md5-check $default_path $typo_path $basic_path
+
+# add Xkb options
+name=XKBOPTIONS
+value="misc:typo,lv3:ralt_switch"
+if ! pcregrep -q "^$name=\".+,$value.*\"$" $default_path; then
+  sudo perl -pe "s/^($name)=\"(.+)\"$/\1=\"\2,$value\"/" -i $default_path
+fi
+pcregrep -q "^$name=\".+,$value.*\"$" $default_path
+
+# modify typo layout
+write-file $typo_path <<EOF
+// typographic keyboard
+// Sergei Stolyarov <sergei@regolit.com>
+//
+// Initial contribution by Alexey Ten <alexeyten+deb@gmail.com>
+//
+// Based on the layout proposed by Ilya Birman, 
+// http://ilyabirman.ru/typography-layout/
+//
+
+// default layout
+default partial
+xkb_symbols "base" {
+// 1st keyboard row
+    key <TLDE> { [NoSymbol, NoSymbol, NoSymbol, approxeq] };
+    key <AE01> { [NoSymbol, NoSymbol, onesuperior] };
+    key <AE02> { [NoSymbol, NoSymbol, twosuperior, onehalf] };
+    key <AE03> { [NoSymbol, NoSymbol, threesuperior, onethird] };
+    // replaced dollar by EuroSign
+    key <AE04> { [NoSymbol, NoSymbol, EuroSign, onequarter] };
+    key <AE05> { [NoSymbol, NoSymbol, U2030] };
+    key <AE07> { [NoSymbol, NoSymbol, ampersand] };
+    key <AE08> { [NoSymbol, NoSymbol, enfilledcircbullet, oneeighth] };
+    // added instead of <AC03>
+    key <AE10> { [NoSymbol, NoSymbol, degree, division] };
+    // replaced emdash by endash
+    key <AE11> { [NoSymbol, NoSymbol, endash, hyphen] };
+    key <AE12> { [NoSymbol, NoSymbol, notequal, plusminus] };
+
+// 2nd keyboard row
+    // key <AD03> { [NoSymbol, NoSymbol, EuroSign] }; // "e"
+    // End
+    key <AD03> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, End, End],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<END>, clearmods=ISO_Level3_Shift)]
+    }; // "e"
+    key <AD04> { [NoSymbol, NoSymbol, registered] }; // "r"
+    key <AD05> { [NoSymbol, NoSymbol, trademark] }; // "t"
+    key <AD06> { [NoSymbol, NoSymbol, yen] }; // "y"
+    // PageUp
+    key <AD07> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, PageUp, PageUp],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<PGUP>, clearmods=ISO_Level3_Shift)]
+    }; // "u"
+    key <AD10> { [NoSymbol, NoSymbol, acute, doubleacute] }; // "p"
+    key <AD11> { [NoSymbol, NoSymbol, bracketleft, braceleft ] }; // [
+    key <AD12> { [NoSymbol, NoSymbol, bracketright, braceright ] }; // ]
+
+// 3rd keyboard row
+    // key <AC01> { [NoSymbol, NoSymbol, U0301, NoSymbol] }; // "a"
+    // Home
+    key <AC01> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, Home, Home],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<HOME>, clearmods=ISO_Level3_Shift)]
+    }; // "a"
+    key <AC02> { [NoSymbol, NoSymbol, section]}; // "s"
+    // key <AC03> { [NoSymbol, NoSymbol, degree, division] }; // "d"
+    // PageDown
+    key <AC03> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, PageDown, PageDown],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<PGDN>, clearmods=ISO_Level3_Shift)]
+    }; // "d"
+    key <AC04> { [NoSymbol, NoSymbol, sterling, NoSymbol] }; // "f"
+    // Left
+    key <AC06> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, Left, Left],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<LEFT>, clearmods=ISO_Level3_Shift)]
+    }; // "h"
+    key <AC07> { [NoSymbol, NoSymbol, doublelowquotemark, singlelowquotemark] }; // "j"
+    // Down
+    key <AC07> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, Down, Down],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<DOWN>, clearmods=ISO_Level3_Shift)]
+    }; // "j"
+    // key <AC08> { [NoSymbol, NoSymbol, leftdoublequotemark, leftsinglequotemark] }; // "k"
+    // Up
+    key <AC08> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, Up, Up],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<UP>, clearmods=ISO_Level3_Shift)]
+    }; // "k"
+    // key <AC09> { [NoSymbol, NoSymbol, rightdoublequotemark, rightsinglequotemark] }; // "l"
+    // Right
+    key <AC09> {
+      type="MOD5_NAV",
+      [NoSymbol, NoSymbol, Right, Right],
+      actions[Group1] = [NoAction(), NoAction(), RedirectKey(key=<RGHT>, clearmods=ISO_Level3_Shift)]
+    }; // "l"
+    key <AC10> { [NoSymbol, NoSymbol, leftsinglequotemark, minutes] }; // ";"
+    key <AC11> { [NoSymbol, NoSymbol, rightsinglequotemark, seconds] }; // "'"
+
+// 4th keyboard row
+    // added instead of <AC01>
+    key <AB01> { [NoSymbol, NoSymbol, U0301, NoSymbol] }; // "z"
+    key <AB02> { [NoSymbol, NoSymbol, multiply, U22C5] }; // "x"
+    key <AB03> { [NoSymbol, NoSymbol, copyright, cent] }; // "c"
+    // replaced less by U2190
+    key <AB08> { [NoSymbol, NoSymbol, guillemotleft, U2190] }; // ","
+    // replaced greater by U2192
+    key <AB09> { [NoSymbol, NoSymbol, guillemotright, U2192] }; // "."
+    key <AB10> { [NoSymbol, NoSymbol, ellipsis] }; // "/"
+};
+
+EOF
+
+# modify basic layout type
+end_pattern="\s+type \"ALPHABETIC\" {.+?};"
+addition=$( cat <<EOF
+
+    type "MOD5_NAV" {
+        modifiers = Shift+Mod5;
+        map[None] = level1;
+        map[Shift] = level2;
+        map[Mod5] = level3;
+        map[Mod5+Shift] = level3;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Caps";
+        level_name[Level3] = "Arrows";
+    };
+EOF
+)
+type_pattern="\s+type \"MOD5_NAV\" {"
+if ! pcregrep -q "$type_pattern" $basic_path; then
+  sudo perl -0777 -pe "s/($end_pattern)/\1\n$addition/s" -i $basic_path
+fi
+pcregrep -q "$type_pattern" $basic_path
+
+# hack setupcon to prevent displaying of errors
+name=ckbcomp
+redir_pattern="2>/dev/null"
+sudo perl -0777 -pe "s/(\t$name .+?)  \|/\1  ${redir_pattern//\//\\/} |/sg" -i $setupcon_path
+pcregrep -qM "\t$name (.+?\n)+\s+$redir_pattern" $setupcon_path
+
+# reconfigure keyboard-configuration package if config was changed
+md5-changed && sudo dpkg-reconfigure -f noninteractive keyboard-configuration
+
+# prevent from overwriting layout files on package updates
+for p in $typo_path $basic_path; do
+  output=`dpkg-divert --list $p`
+  [[ -z $output ]] && sudo dpkg-divert $p
+done
+
