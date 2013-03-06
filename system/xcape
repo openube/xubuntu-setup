@@ -1,0 +1,21 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+xcape_url=https://github.com/alols/xcape/archive/master.zip
+xcape_md5=eeb2ba971f82d2a13519472d4cbe7d1d
+
+if [[ ! -x /usr/bin/xcape ]]; then
+  # download and extract xcape sources
+  engine=wget download $xcape_url $xcape_md5
+  unzip -qo master.zip
+  
+  # install compile time dependencies
+  install libx11-dev libxtst-dev pkg-config
+
+  pushd xcape-master
+    # compile and install xcape
+    make
+    sudo checkinstall -y --pkgversion=1.0
+  popd
+fi
+
