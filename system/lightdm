@@ -10,6 +10,16 @@ name=autologin-user
 sudo perl -0777 -pe "s/\n$name=.+\n/\n/" -i $conf_path
 ! pcregrep "^$name=.+$" $conf_path
 
+# configure touchpad on greeter
+name=greeter-setup-script
+value="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -i0.5 &\""
+if ! pcregrep -q "^$name=" $conf_path; then
+  echo "$name=$value" | sudo tee -a $conf_path 1>/dev/null
+else
+  sudo perl -pe "s|^($name)=.*|\1=$value|" -i $conf_path
+fi
+pcregrep -q "^$name=$value$" $conf_path
+
 # fix the path to background referenced to Xubuntu plymouth background
 name=background
 sudo perl -pe "s|^($name)=.+$|\1=$backdrop_path|" -i $greeter_path
