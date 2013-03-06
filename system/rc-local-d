@@ -1,19 +1,20 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-initd_path=/etc/init.d/rc.local.d
+name=rc.local.d
+initd_path=/etc/init.d/$name
 start_runlevels="2 3 4 5"
 
-# write init.d script
+# create init.d script for running scripts from /etc/rc.local.d directory on boot
 write-script $initd_path <<EOF
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          rc.local.d
+# Provides:          $name
 # Required-Start:    \$remote_fs \$syslog \$all
 # Required-Stop:
 # Default-Start:     $start_runlevels
 # Default-Stop:
-# Short-Description: Run scripts from /etc/rc.local.d if it exist
+# Short-Description: Run scripts from /etc/$name it exist
 ### END INIT INFO
 
 
@@ -23,8 +24,9 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 . /lib/lsb/init-functions
 
 do_start() {
-        for path in `ls /etc/rc.local.d/* 2>/dev/null`; do
+        for path in \`ls /etc/$name/* 2>/dev/null\`; do
                 [ "\$VERBOSE" != no ] && log_begin_msg "Running local boot script (\$path)"
+		\$path
                 ES=\$?
                 [ "\$VERBOSE" != no ] && log_end_msg \$ES
         done
@@ -50,5 +52,5 @@ esac
 EOF
 
 # update rc.d
-sudo update-rc.d rc.local.d start 99 $start_runlevels .
+sudo update-rc.d $name start 99 $start_runlevels .
 
