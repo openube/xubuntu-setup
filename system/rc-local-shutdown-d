@@ -1,0 +1,56 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+name=rc.local.shutdown.d
+initd_path=/etc/init.d/$name
+stop_runlevels="0 6"
+
+# create init.d script for running scripts from /etc/rc.local.shutdown.d directory on shutdown
+write-script $initd_path <<EOF
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          $name
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:      $stop_runlevels
+# Short-Description: Run scripts from /etc/$name it exist
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_stop() {
+        for path in \`ls /etc/$name/* 2>/dev/null\`; do
+                [ "\$VERBOSE" != no ] && log_begin_msg "Running local shutdown script (\$path)"
+		\$path
+                ES=\$?
+                [ "\$VERBOSE" != no ] && log_end_msg \$ES
+        done
+        return
+}
+
+case "\$1" in
+    start)
+        ;;
+    restart|reload|force-reload)
+        echo "Error: argument '\$1' not supported" >&2
+        exit 3
+        ;;
+    stop)
+        do_stop
+        ;;
+    *)
+        echo "Usage: \$0 start|stop" >&2
+        exit 3
+        ;;
+esac
+
+EOF
+
+# update rc.d
+sudo update-rc.d $name stop 00 $stop_runlevels .
+
