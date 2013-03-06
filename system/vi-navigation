@@ -4,20 +4,11 @@
 
 . `dirname $0`/../library/script
 
-default_path=/etc/default/keyboard
 typo_path=/usr/share/X11/xkb/symbols/typo
 basic_path=/usr/share/X11/xkb/types/basic
 setupcon_path=/bin/setupcon
 
-md5-check $default_path $typo_path $basic_path
-
-# add Xkb options
-name=XKBOPTIONS
-value="misc:typo,lv3:ralt_switch"
-if ! pcregrep -q "^$name=\".+,$value.*\"$" $default_path; then
-  sudo perl -pe "s/^($name)=\"(.+)\"$/\1=\"\2,$value\"/" -i $default_path
-fi
-pcregrep -q "^$name=\".+,$value.*\"$" $default_path
+md5-check $typo_path $basic_path
 
 # modify typo layout
 write-file $typo_path <<EOF
@@ -153,7 +144,7 @@ if ! pcregrep -q "$type_pattern" $basic_path; then
 fi
 pcregrep -q "$type_pattern" $basic_path
 
-# hack setupcon to prevent displaying of errors
+# hack setupcon to prevent displaying the errors
 name=ckbcomp
 redir_pattern="2>/dev/null"
 sudo perl -0777 -pe "s/(\t$name .+?)  \|/\1  ${redir_pattern//\//\\/} |/sg" -i $setupcon_path
