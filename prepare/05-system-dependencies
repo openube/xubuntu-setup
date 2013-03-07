@@ -4,4 +4,5 @@
 # install packages needed for system stage scripts
 install axel gdebi-core xmlstarlet # utils
 install checkinstall # build
+install python-pip # script languages package managers
 
