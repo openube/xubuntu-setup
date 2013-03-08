@@ -2,6 +2,7 @@
 . `dirname $0`/../library/script
 
 client_path=/usr/bin/VBoxClient-all
+initd_path=/etc/init.d/virtualbox-guest-utils
 
 # install VirtualBox guest packages
 install virtualbox-guest-{dkms,utils,x11}
@@ -64,4 +65,9 @@ test -z "\$no_display" &&
 #     /usr/bin/VBoxClient --draganddrop
 
 EOF
+
+# disable warnings for VirtualBox Guest init.d script
+name=log_warning_msg
+sudo perl -pe "s/(\s*)($name .+)/\1# \2/" -i $initd_path
+[[ `pcregrep -c "\s*# $name .+" $initd_path` == 1 ]]
 
