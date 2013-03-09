@@ -38,7 +38,6 @@ openbox
 kupfer
 keepassx
 qt4-qtconfig
-trayer
 sxiv
 seahorse
 gconf-editor
@@ -52,6 +51,7 @@ rxvt-unicode-256color
 lxshortcut
 fbreader
 comix
+fbpanel
 "
 
 # strip out comments
