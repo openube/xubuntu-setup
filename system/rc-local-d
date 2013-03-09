@@ -4,6 +4,7 @@
 name=rc.local.d
 initd_path=/etc/init.d/$name
 start_runlevels="2 3 4 5"
+watches_path=/etc/rc.local.d/max-user-watches
 
 # create init.d script for running scripts from /etc/rc.local.d directory on boot
 write-script $initd_path <<EOF
@@ -53,4 +54,11 @@ EOF
 
 # update rc.d
 sudo update-rc.d $name start 99 $start_runlevels .
+
+# add rc.local.d script for updating max-user-watches
+write-script $watches_path <<EOF
+#!/bin/sh
+echo 1048576 > /proc/sys/fs/inotify/max_user_watches
+
+EOF
 
