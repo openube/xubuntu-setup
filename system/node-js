@@ -12,7 +12,7 @@ install nodejs npm
 
 # install node.js packages
 for package in $node_packages; do
-  [[ ! -d $modules_dir/$package ]] && sudo npm install $package -g || true
+  [[ ! -d $modules_dir/$package ]] && sudo npm install -g $package || true
 done
 
 # remove npm directories from home
