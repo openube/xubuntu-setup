@@ -6,6 +6,7 @@ crashplan_md5=444ba4d6e5194472791dd377f561f00c
 config_glob="/usr/local/crashplan/conf/*.service.xml"
 cache_dir=/run/shm/crashplan/cache
 
+# install dependencies
 install openjdk-7-jre
 
 if [[ ! -x /usr/local/bin/CrashPlanDesktop ]]; then
