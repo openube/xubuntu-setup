@@ -34,5 +34,8 @@ if ! VBoxManage list extpacks | grep -q "Oracle VM VirtualBox Extension Pack"; t
 
   # add user to group
   sudo adduser $USER vboxusers
+
+  # remove autmatically created directory
+  rm -rf ~/.VirtualBox
 fi
 
