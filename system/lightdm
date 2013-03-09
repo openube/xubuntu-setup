@@ -4,7 +4,7 @@
 conf_path=/etc/lightdm/lightdm.conf
 greeter_path=/etc/lightdm/lightdm-gtk-greeter.conf
 backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
-setup_cmd="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -dtKR -i0.5\""
+setup_cmd="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -dtkR -i0.5\""
 
 # disable autologin
 name=autologin-user
