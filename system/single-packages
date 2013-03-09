@@ -32,6 +32,7 @@ ncdu
 iotop
 unison
 zram-config
+tree
 
 # GUI soft
 dconf-tools
@@ -50,6 +51,7 @@ mysql-workbench
 vlc
 shutter
 rxvt-unicode-256color
+lxshortcut
 "
 
 # strip out comments
