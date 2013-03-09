@@ -19,3 +19,17 @@ fi
 # install VirtualBox
 install virtualbox-4.2
 
+if ! VBoxManage list extpacks | grep -q "Oracle VM VirtualBox Extension Pack"; then
+  # download Oracle VM Extension Pack
+  # SOURCE: https://github.com/xdissent/ievms/blob/master/ievms.sh
+  version=`VBoxManage -v`
+  major_minor_release=${version%%[-_r]*}
+  filename=Oracle_VM_VirtualBox_Extension_Pack-${major_minor_release}.vbox-extpack
+  url=http://download.virtualbox.org/virtualbox/${major_minor_release}/${filename}
+  md5=22518ce5e06c267287f631915681250c
+  download $url $md5
+  
+  # install Oracle VM Extension Pack
+  sudo VBoxManage extpack install $filename
+fi
+
