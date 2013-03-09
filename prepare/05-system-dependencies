@@ -5,4 +5,5 @@
 install axel gdebi-core xmlstarlet # utils
 install checkinstall # build
 install python-pip # script languages package managers
+install cabextract # unarchivers
 
