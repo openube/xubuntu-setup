@@ -11,7 +11,7 @@ if [[ ! -x /usr/local/bin/phpsh ]]; then
 
   # build phpsh package and install
   pushd phpsh-master
-  sudo checkinstall -y --pkgversion=1.0 python setup.py install
+    sudo checkinstall -y --pkgversion=1.0 python setup.py install
   popd
 fi
 
