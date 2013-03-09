@@ -12,8 +12,9 @@ if [[ ! -x $bin_path ]]; then
   download "$sublime_text_url" $sublime_text_md5
   tar xjf "`basename "$sublime_text_url"`"
   
-  # copy move program files and create symlink to executable
+  # move program files, change own and create symlink to executable
   sudo mv Sublime\ Text\ 2 $sublime_text_dir
+  sudo chown root:root -R $sublime_text_dir
   sudo ln -s $sublime_text_dir/sublime_text $bin_path
 fi
 
