@@ -13,12 +13,10 @@ unclutter
 wmctrl
 xdotool
 mesa-utils
-xsel
 
 # CLI soft
 vim
 git
-ranger
 htop
 ack-grep
 exfat-utils
