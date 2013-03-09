@@ -1,0 +1,13 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+modules_path=/etc/modules
+
+install lm-sensors
+
+name=coretemp
+if ! pcregrep -q "^$name$" $modules_path; then
+  echo -e "\n# Chip drivers\ncoretemp" | sudo tee -a $modules_path 1>/dev/null
+  pcregrep -q "^$name$" $modules_path
+fi
+
