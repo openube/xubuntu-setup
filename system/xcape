@@ -11,7 +11,6 @@ if [[ ! -x /usr/bin/xcape ]]; then
   unzip -qo master.zip
   
   # install compile time dependencies
-  install pkg-config
   install $build_deps
 
   pushd xcape-master
