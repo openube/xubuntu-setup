@@ -31,5 +31,8 @@ if ! VBoxManage list extpacks | grep -q "Oracle VM VirtualBox Extension Pack"; t
   
   # install Oracle VM Extension Pack
   sudo VBoxManage extpack install $filename
+
+  # add user to group
+  sudo adduser $USER vboxusers
 fi
 
