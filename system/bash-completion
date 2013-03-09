@@ -1,0 +1,9 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+script_path=/usr/share/bash-completion/bash_completion
+
+replace="_tilde \"\$cur\" || return 0"
+sudo perl -pe "s/^\s+_expand \|\| return 0$/$replace/" -i $script_path
+[[ `pcregrep -c "^\s+$replace$" $script_path` == 18 ]]
+
