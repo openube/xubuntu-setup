@@ -53,6 +53,12 @@ uninstall() {
   fi
 }
 
+# update packages from source list
+apt-update-list() {
+  list_path=$1
+  sudo apt-get update -o Dir::Etc::sourcelist=$list_path -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
+}
+
 # add PPA source silently if it was not added already
 add-ppa() {
   ppa=$1
@@ -63,8 +69,8 @@ add-ppa() {
     sudo add-apt-repository -y ppa:$ppa
     # override release name
     [[ -n ${release:-} ]] && sudo perl -pe "s/^(.+? .+?) .+? /\1 $release /" -i $list_path
-    # update packages from added repository only
-    sudo apt-get update -o Dir::Etc::sourcelist="$list_path" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" 
+    # update packages from added soruce list
+    apt-update-list $list_path
   fi
 }
 
