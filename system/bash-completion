@@ -3,7 +3,9 @@
 
 script_path=/usr/share/bash-completion/bash_completion
 
+# prevent tilde expansion during some autocompletions
+# SOURCE: https://bugs.launchpad.net/bash-completion/+bug/324505/comments/9
 replace="_tilde \"\$cur\" || return 0"
 sudo perl -pe "s/^\s+_expand \|\| return 0$/$replace/" -i $script_path
-[[ `pcregrep -c "^\s+$replace$" $script_path` == 18 ]]
+[[ `pcregrep -c "^\s+$replace$" $script_path` == 17 ]]
 
