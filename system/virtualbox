@@ -1,0 +1,21 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+repository_url=http://download.virtualbox.org/virtualbox/debian
+list_path=/etc/apt/sources.list.d/virtualbox.list
+
+if [[ ! -f $list_path ]]; then
+  # add repository URL to source list
+  write-file $list_path <<EOF
+deb $repository_url quantal contrib non-free
+
+EOF
+  # import apt key
+  wget -q $repository_url/oracle_vbox.asc -O- | sudo apt-key add -
+  # update packages from added repository only
+  sudo apt-get update -o Dir::Etc::sourcelist="$list_path" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+fi
+
+# install VirtualBox
+install virtualbox-4.2
+
