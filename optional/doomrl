@@ -1,0 +1,39 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+doomrl_url=http://doom.chaosforge.org/file_download/25/doomrl-linux-x64-0996.tar.gz
+doomrl_md5=9d3aa84421c6dc900c8a8e7c2619eee2
+install_prefix=/usr/local
+bin_path=$install_prefix/games/doomrl
+doomrl_dir=$install_prefix/doomrl
+profile_dir=~/.profiles/doomrl
+
+# install dependencies
+install libsdl-mixer1.2
+
+if [[ ! -x $bin_path ]]; then
+  # download and unpack program files
+  download $doomrl_url $doomrl_md5
+  tar xzf `basename $doomrl_url`
+
+  # move program files
+  sudo mkdir -p $doomrl_dir
+  sudo chown $USER:$USER $doomrl_dir
+  sudo mv doomrl-linux-*/* $doomrl_dir/
+fi
+
+# create symlinks to profile directory files
+for name in backup config.lua save; do
+  target=$doomrl_dir/$name
+  [[ -d $target ]] && rm -r $target
+  ln -sf $profile_dir/$name $target
+done
+
+# create executable script
+write-script $bin_path <<EOF
+#!/bin/sh
+cd $doomrl_dir
+./doomrl "\$@"
+
+EOF
+
