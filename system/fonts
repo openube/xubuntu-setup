@@ -1,8 +1,21 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
+tahoma_url=http://download.microsoft.com/download/office97pro/fonts/1/w95/en-us/tahoma32.exe
+tahoma_md5=ccd250dd30247d68e0f8a14adf797262
+ms_fonts_dir=/usr/share/fonts/truetype/msttcorefonts
+
 # accept Microsoft fonts license and download fonts
 # SOURCE: http://askubuntu.com/a/25614
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 install ttf-mscorefonts-installer
+
+if [[ ! -f $ms_fonts_dir/Tahoma.TTF ]]; then
+  # download and install Tahoma font
+  # SOURCE: http://wiki.debian.org/tahoma
+  download $tahoma_url $tahoma_md5
+
+  cabextract `basename $tahoma_url`
+  sudo mv Tahoma*.TTF $ms_fonts_dir
+fi
 
