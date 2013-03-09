@@ -30,6 +30,8 @@ w3m
 aptitude
 ncdu
 iotop
+unison
+zram-config
 
 # GUI soft
 dconf-tools
@@ -47,6 +49,7 @@ gimp
 mysql-workbench
 vlc
 shutter
+rxvt-unicode-256color
 "
 
 # strip out comments
