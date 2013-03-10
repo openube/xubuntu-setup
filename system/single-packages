@@ -31,6 +31,7 @@ iotop
 unison
 zram-config
 tree
+acpi
 
 # GUI soft
 dconf-tools
@@ -38,7 +39,6 @@ openbox
 kupfer
 keepassx
 qt4-qtconfig
-sxiv
 seahorse
 gconf-editor
 sqlitebrowser
