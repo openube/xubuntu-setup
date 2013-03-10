@@ -10,16 +10,16 @@ if [[ ! -x /usr/bin/xcape ]]; then
   engine=wget download $xcape_url $xcape_md5
   unzip -qo master.zip
   
-  # install compile time dependencies
+  # install build time dependencies
   install $build_deps
 
   pushd xcape-master
-    # compile and install xcape
+    # build and install xcape
     make
     sudo checkinstall -y --pkgversion=1.0
   popd
 
-  # uninstall compile time dependencies
+  # uninstall build time dependencies
   uninstall $build_deps
 fi
 
