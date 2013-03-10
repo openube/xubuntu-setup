@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+gatotray_url=https://gatotray.googlecode.com/files/gatotray.bin64
+gatotray_md5=2b6b3838dfbd1990707533857edafeba
+bin_path=/usr/local/bin/gatotray
+
+if [[ ! -x $bin_path ]]; then
+  # download gatotray binary
+  download $gatotray_url $gatotray_md5
+  
+  # move binary to executable path and set permissions
+  sudo mv `basename $gatotray_url` $bin_path
+  sudo chmod +x $bin_path
+  sudo chown root:root $bin_path
+fi
+
