@@ -1,0 +1,45 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+sxiv_url=https://github.com/muennich/sxiv/archive/master.zip
+sxiv_md5=71274bb09a19eeac69dd572e1fd6725d
+build_deps="libx11-dev libimlib2-dev"
+
+# install font
+install xfonts-terminus
+
+if [[ ! -x /usr/bin/sxiv ]]; then
+  # download and extract sxiv source
+  engine=wget download $sxiv_url $sxiv_md5
+  unzip -qo master.zip
+
+  # install build time dependencies
+  install $build_deps
+
+  pushd sxiv-master
+    # create config.h
+    filename=config.h
+    make $filename
+
+    # change thumbnail size
+    before="enum { THUMB_SIZE ="
+    after="};"
+    value=120
+    perl -pe "s/^($before) 60 ($after)$/\1 $value \2/" -i $filename
+    pcregrep -q "^$before $value $after$" $filename
+    
+    # change bar font
+    value="\"-\*-terminus-medium-\*-\*-\*-14-\*-\*-\*-\*-\*-\*-\*\""
+    perl -pe "s/\"-\*-fixed-medium-r-\*-\*-13-\*-\*-\*-\*-60-\*-\*\"/$value/" -i $filename
+    [[ `pcregrep -c "$value" $filename` == 1 ]]
+
+    # build and install sxiv
+    make
+    sudo checkinstall -y --pkgversion=1.0
+  popd
+
+  # uninstall build time dependencies
+  uninstall $build_deps
+fi
+
+
