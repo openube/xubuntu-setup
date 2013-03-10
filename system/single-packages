@@ -21,6 +21,7 @@ htop
 ack-grep
 exfat-utils
 colordiff
+wdiff
 inotify-tools
 realpath
 beep
