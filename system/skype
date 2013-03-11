@@ -5,6 +5,3 @@
 install skype
 install gtk2-engines-murrine:i386 gtk2-engines-pixbuf:i386 # for Gtk theme rendering 
 
-# install python package
-sudo pip install Skype4Py
-

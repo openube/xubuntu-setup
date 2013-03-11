@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+packages="
+Skype4Py
+pyradio
+"
+
+# install pip
+install python-pip
+
+# install pip packages one by one
+packages_dir=/usr/local/lib/`readlink /usr/bin/python`/dist-packages
+for package in `echo $packages`; do
+  [[ ! -d $packages_dir/$package ]] && sudo pip install $package || true
+done
+
