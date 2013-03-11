@@ -23,8 +23,8 @@ trap on-exit EXIT
 
 # install packages silently if they were not installed already
 install() {
-  packages=
-  options=
+  local packages=
+  local options=
   for arg in $@; do
     if [[ $arg == -* ]]; then
       options="$options $arg"
