@@ -6,9 +6,6 @@ Skype4Py
 pyradio
 "
 
-# install pip
-install python-pip
-
 # install pip packages one by one
 packages_dir=/usr/local/lib/`readlink /usr/bin/python`/dist-packages
 for package in `echo $packages`; do
