@@ -1,0 +1,14 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+checkgmail_path=/usr/bin/checkgmail
+
+# install package
+install checkgmail
+
+# fix $HOME variable assignment in main script
+name="\\\$HOME"
+value="\\\$ENV\{'HOME'\}"
+sudo perl -pe "s/^($name) = .+$/\1 = $value;/" -i $checkgmail_path
+pcregrep -q "^$name = $value;$" $checkgmail_path
+
