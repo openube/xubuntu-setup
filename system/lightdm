@@ -3,7 +3,6 @@
 
 conf_path=/etc/lightdm/lightdm.conf
 greeter_path=/etc/lightdm/lightdm-gtk-greeter.conf
-backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
 declare -A scripts
 scripts[greeter-setup-script]="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -dtkR -i0.5 || true\""
 scripts[session-cleanup-script]="bash -c \"pkill -f '\^/bin/bash '\""
@@ -24,8 +23,9 @@ for name in "${!scripts[@]}"; do
   pcregrep -q "^$name=$cmd$" $conf_path
 done
 
-# fix the path to background referenced to Xubuntu plymouth background
+# change greeter background
 name=background
-sudo perl -pe "s|^($name)=.+$|\1=$backdrop_path|" -i $greeter_path
-pcregrep -q "^$name=$backdrop_path$" $greeter_path
+value=#18548C
+sudo perl -pe "s|^($name)=.+$|\1=$value|" -i $greeter_path
+pcregrep -q "^$name=$value$" $greeter_path
 
