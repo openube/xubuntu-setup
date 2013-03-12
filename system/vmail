@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+build_deps="ruby-dev libsqlite3-dev"
+
+# install runtime dependencies
+install sqlite3
+
+if [[ ! -x /usr/local/bin/vmail ]]; then
+  # install build dependencies
+  install $build_deps
+  
+  # install gem
+  sudo gem install vmail
+  
+  # uninstall build dependencies
+  uninstall $build_deps
+fi
+
