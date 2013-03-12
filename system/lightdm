@@ -4,21 +4,25 @@
 conf_path=/etc/lightdm/lightdm.conf
 greeter_path=/etc/lightdm/lightdm-gtk-greeter.conf
 backdrop_path=/usr/share/xfce4/backdrops/xubuntu-quantal.png
-setup_cmd="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -dtkR -i0.5 || true\""
+declare -A scripts
+scripts[greeter-setup-script]="bash -c \"DISPLAY=:0; XAUTHORITY=/var/run/lightdm/root/:0; synclient TapButton{1..3}=0 && syndaemon -dtkR -i0.5 || true\""
+scripts[session-cleanup-script]="bash -c \"pkill -f '\^/bin/bash '\""
 
 # disable autologin
 name=autologin-user
 sudo perl -0777 -pe "s/\n$name=.+\n/\n/" -i $conf_path
 ! pcregrep "^$name=.+$" $conf_path
 
-# configure touchpad on greeter
-name=greeter-setup-script
-if ! pcregrep -q "^$name=" $conf_path; then
-  echo "$name=$setup_cmd" | sudo tee -a $conf_path 1>/dev/null
-else
-  sudo perl -pe "s|^($name)=.*|\1=$setup_cmd|" -i $conf_path
-fi
-pcregrep -q "^$name=$setup_cmd$" $conf_path
+# add or modify setup and cleanup scripts
+for name in "${!scripts[@]}"; do
+  cmd="${scripts[$name]}"
+  if ! pcregrep -q "^$name=" $conf_path; then
+    echo "$name=$cmd" | sudo tee -a $conf_path 1>/dev/null
+  else
+    sudo perl -pe "s#^($name)=.*#\1=$cmd#" -i $conf_path
+  fi
+  pcregrep -q "^$name=$cmd$" $conf_path
+done
 
 # fix the path to background referenced to Xubuntu plymouth background
 name=background
