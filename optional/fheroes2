@@ -1,0 +1,39 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+fheroes2_url=http://citylan.dl.sourceforge.net/project/fheroes2/fheroes2/fheroes2-20120514-linux-r2860.tar.gz
+fheroes2_md5=f3fc6218e0f6b74bb9ac36a5a5c98dbb
+install_prefix=/usr/local
+bin_path=$install_prefix/games/fheroes2
+fheroes2_dir=$install_prefix/fheroes2
+profile_dir=~/.profiles/fheroes2
+
+# install dependencies
+install libsdl-{mixer,net}1.2
+
+if [[ ! -x $bin_path ]]; then
+  # download and unpack program files
+  download $fheroes2_url $fheroes2_md5
+  tar xzf `basename $fheroes2_url`
+
+  # move program files
+  sudo mkdir -p $fheroes2_dir
+  sudo chown $USER:$USER $fheroes2_dir
+  sudo mv fheroes2/* $fheroes2_dir/
+fi
+
+# create symlinks to profile directory files
+for name in data fheroes2.{cfg,key} files maps; do
+  target=$fheroes2_dir/$name
+  [[ -d $target ]] && rm -r $target
+  ln -sf $profile_dir/$name $target
+done
+
+# create executable script
+write-script $bin_path <<EOF
+#!/bin/sh
+cd $fheroes2_dir
+./fheroes2.x86_64 "\$@"
+
+EOF
+
