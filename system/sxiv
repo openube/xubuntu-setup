@@ -33,9 +33,12 @@ if [[ ! -x /usr/bin/sxiv ]]; then
     perl -pe "s/\"-\*-fixed-medium-r-\*-\*-13-\*-\*-\*-\*-60-\*-\*\"/$value/" -i $filename
     [[ `pcregrep -c "$value" $filename` == 1 ]]
 
+    # get version number
+    version=`pcregrep -o1 " = git-(\d+)$" ./Makefile`
+
     # build and install sxiv
     make
-    sudo checkinstall -y --pkgversion=1.0
+    sudo checkinstall -y --pkgversion=$version
   popd
 
   # uninstall build time dependencies
