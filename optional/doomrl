@@ -19,7 +19,7 @@ if [[ ! -x $bin_path ]]; then
   # move program files
   sudo mkdir -p $doomrl_dir
   sudo chown $USER:$USER $doomrl_dir
-  sudo mv doomrl-linux-*/* $doomrl_dir/
+  sudo mv ./doomrl-linux-*/* $doomrl_dir/
 fi
 
 # create symlinks to profile directory files
