@@ -12,3 +12,8 @@ value="\\\$ENV\{'HOME'\}"
 sudo perl -pe "s/^($name) = .+$/\1 = $value;/" -i $checkgmail_path
 pcregrep -q "^$name = $value;$" $checkgmail_path
 
+# disable initial icon loading
+line="set_icons\(\);"
+sudo perl -pe "s/^($line)$/# \1/" -i $checkgmail_path
+pcregrep -q "^# $line$" $checkgmail_path
+
