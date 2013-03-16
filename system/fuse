@@ -1,0 +1,16 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+conf_path=/etc/fuse.conf
+
+# install FUSE-based packages
+install curlftpfs
+
+# add user to group fuse
+sudo adduser $USER fuse
+
+# enable allow_other option
+name=user_allow_other
+sudo perl -pe "s/^#($name)$/\1/" -i $conf_path
+pcregrep -q "^$name$" $conf_path
+
