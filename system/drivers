@@ -1,5 +1,19 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-install bcmwl-kernel-source # Broadcom WiFi devices
+isight_url=https://github.com/sgtpep/xubuntu-setup/blob/master/vendor/isight.fw
+isight_md5=03410b64fc1083f14e190c58f80ef9e1
+firmware_dir=/lib/firmware
+isight_filename=`basename $isight_url`
+isight_path=$firmware_dir/$isight_filename
+
+# install Broadcom WiFi driver
+install bcmwl-kernel-source
+
+if [[ ! -f $isight_path ]]; then
+  # install iSight firmware
+  engine=wget download $isight_url $isight_md5
+  sudo cp $isight_filename $isight_path
+  sudo chown root:root $isight_path
+fi
 
