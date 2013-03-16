@@ -8,7 +8,7 @@ modules_dir=/usr/lib/node_modules
 
 # install node.js and npm from PPA
 add-ppa chris-lea/node.js
-install nodejs npm
+install nodejs
 
 # install node.js packages
 for package in $node_packages; do
