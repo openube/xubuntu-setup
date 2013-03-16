@@ -34,6 +34,8 @@ unison
 zram-config
 tree
 acpi
+subversion
+ncftp
 
 # GUI soft
 dconf-tools
