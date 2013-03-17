@@ -3,5 +3,5 @@
 
 # install atool, archivers and unarchivers
 install atool
-install unzip rar unrar p7zip cabextract
+install unzip rar unrar p7zip-full cabextract
 
