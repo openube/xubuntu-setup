@@ -13,12 +13,12 @@ install libsdl-{mixer,net}1.2
 if [[ ! -x $bin_path ]]; then
   # download and unpack program files
   download $fheroes2_url $fheroes2_md5
-  # tar xzf `basename $fheroes2_url`
-  sudo tar xzf `basename $fheroes2_url`
+  tar xzf `basename $fheroes2_url`
 
-  # move program files
+  # move program files and change owner
   sudo mkdir -p $fheroes2_dir
   sudo mv ./fheroes2/* $fheroes2_dir/
+  sudo chown -R root:root $fheroes2_dir
 
   # create symlink to executable
   sudo ln -s $fheroes2_dir/fheroes2.x86_64 $bin_path
