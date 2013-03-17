@@ -1,0 +1,44 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+powder_url=http://www.zincland.com/powder/release/powder117_linux.tar.gz
+powder_md5=d5fe123927ebb04083386cb4f1e5b210
+install_prefix=/usr/local
+bin_path=$install_prefix/games/powder
+powder_dir=$install_prefix/powder
+
+# install x86 version of SDL library
+install libsdl1.2debian:i386
+
+if [[ ! -x $bin_path ]]; then
+  # download and extract program files
+  download $powder_url $powder_md5
+  tar xzf `basename $powder_url`
+
+  # move program files and change owner
+  sudo mkdir $powder_dir
+  sudo mv ./powder*/* $powder_dir/
+  sudo chown -R root:root $powder_dir
+
+  # create symlink to executable
+  sudo ln -s $powder_dir/`basename $bin_path` $bin_path
+fi
+
+exit
+
+# build_deps=libsdl1.2-dev
+
+uninstall $build_deps
+exit
+
+
+  # install build time dependencies
+  install $build_deps
+
+  # pushd xcape-master
+  #   # build POWDER game
+  # popd
+
+  # # uninstall build time dependencies
+  # uninstall $build_deps
+
