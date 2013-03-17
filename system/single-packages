@@ -36,6 +36,7 @@ tree
 acpi
 subversion
 ncftp
+transmission-cli
 
 # GUI soft
 dconf-tools
