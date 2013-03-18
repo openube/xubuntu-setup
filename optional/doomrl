@@ -14,19 +14,17 @@ install libsdl-mixer1.2
 if [[ ! -x $bin_path ]]; then
   # download and unpack program files
   download $doomrl_url $doomrl_md5
-  tar xzf `basename $doomrl_url`
+  unpack-downloaded $doomrl_url
 
   # move program files
-  sudo mkdir -p $doomrl_dir
-  sudo chown $USER:$USER $doomrl_dir
-  sudo mv ./doomrl-linux-*/* $doomrl_dir/
+  user=$USER move ./doomrl-linux-*/ $doomrl_dir
 fi
 
 # create symlinks to profile directory files
 for name in backup config.lua save; do
-  target=$doomrl_dir/$name
-  [[ -d $target ]] && rm -r $target
-  ln -sf $profile_dir/$name $target
+  link=$doomrl_dir/$name
+  noconfirm=1 remove $link
+  ln -s $profile_dir/$name $link
 done
 
 # create executable script

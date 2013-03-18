@@ -3,19 +3,14 @@
 
 toolchain_url=http://www.treewalker.org/opendingux/opendingux-toolchain.2012-06-16.tar.bz2
 toolchain_md5=97adec736b4dc08d0c0930d8400a9e76
-toolchain_name=opendingux-toolchain
-toolchain_path=/opt/$toolchain_name
+toolchain_dir=/opt/opendingux-toolchain
 
-if [[ ! -d $toolchain_path ]]; then
-  # install required build tools
-  install scons # for gambatte
-  
+if [[ ! -d $toolchain_dir ]]; then
   # download and unpack OpenDingux toolchain
   download $toolchain_url $toolchain_md5
-  tar xjf `basename $toolchain_url`
+  unpack-downloaded $toolchain_url
   
   # move toolchain to /opt and change owner
-  sudo mv $toolchain_name $toolchain_path
-  sudo chown -R root:root $toolchain_path
+  move ./opendingux-toolchain $toolchain_dir
 fi
 

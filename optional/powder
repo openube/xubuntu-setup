@@ -13,14 +13,12 @@ install libsdl1.2debian:i386
 if [[ ! -x $bin_path ]]; then
   # download and extract program files
   download $powder_url $powder_md5
-  tar xzf `basename $powder_url`
+  unpack-downloaded `basename $powder_url`
 
   # move program files and change owner
-  sudo mkdir $powder_dir
-  sudo mv ./powder*/* $powder_dir/
-  sudo chown -R root:root $powder_dir
+  move ./powder*/ $powder_dir
 
   # create symlink to executable
-  sudo ln -s $powder_dir/`basename $bin_path` $bin_path
+  sudo ln -s $powder_dir/powder $bin_path
 fi
 
