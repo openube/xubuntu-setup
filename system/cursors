@@ -1,23 +1,20 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-cursors_url=http://gnome-look.org/CONTENT/content-files/57588-Shere_Khan_X.tar.gz
-cursors_md5=a83f4a4cc99bb7e6c36665ada4e73fad
+url=http://gnome-look.org/CONTENT/content-files/57588-Shere_Khan_X.tar.gz
+md5=a83f4a4cc99bb7e6c36665ada4e73fad
 icons_dir=/usr/share/icons
 theme_name=Shere_Khan_X
 default_path=$icons_dir/default/index.theme
 
 if [[ ! -d /usr/share/icons/Shere_Khan_X ]]; then
-  # download and unpack cursor theme
-  download $cursors_url $cursors_md5
-  tar xzf `basename $cursors_url`
-
-  # move cursor theme to system directory and change owner
-  sudo mv ./$theme_name $icons_dir
-  sudo chown -R root:root $icons_dir/$theme_name
+  # download, unpack and move cursor theme
+  download $url $md5
+  unpack-downloaded $url
+  move ./$theme_name/ $icons_dir/
 fi
 
-# set cursor theme the default one
+# set installed cursor theme the default one
 name=Inherits
 sudo perl -pe "s/^($name)=.+$/\1=$theme_name/" -i $default_path
 pcregrep -q "^$name=$theme_name$" $default_path

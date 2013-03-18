@@ -11,9 +11,8 @@ isight_path=$firmware_dir/$isight_filename
 install bcmwl-kernel-source
 
 if [[ ! -f $isight_path ]]; then
-  # install iSight firmware
+  # download and move iSight firmware
   engine=wget download $isight_url $isight_md5
-  sudo cp $isight_filename $isight_path
-  sudo chown root:root $isight_path
+  move $isight_filename $isight_path
 fi
 

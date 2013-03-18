@@ -1,17 +1,17 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-sxiv_url=https://github.com/muennich/sxiv/archive/master.zip
-sxiv_md5=71274bb09a19eeac69dd572e1fd6725d
+url=https://github.com/muennich/sxiv/archive/master.zip
+md5=71274bb09a19eeac69dd572e1fd6725d
 build_deps="libx11-dev libimlib2-dev"
 
 # install font
 install xfonts-terminus
 
 if [[ ! -x /usr/bin/sxiv ]]; then
-  # download and extract sxiv source
-  engine=wget download $sxiv_url $sxiv_md5
-  unzip -qo master.zip
+  # download and unpack program sources
+  engine=wget download $url $md5
+  unpack-downloaded $url
 
   # install build time dependencies
   install $build_deps

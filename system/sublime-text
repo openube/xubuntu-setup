@@ -1,21 +1,18 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-sublime_text_url=http://c758482.r82.cf2.rackcdn.com/Sublime\ Text\ 2.0.1\ x64.tar.bz2
-sublime_text_md5=bd816d93239a0af9ade257b2a9dcf8d2
+url=http://c758482.r82.cf2.rackcdn.com/Sublime\ Text\ 2.0.1\ x64.tar.bz2
+md5=bd816d93239a0af9ade257b2a9dcf8d2
 install_prefix=/usr/local
 bin_path=$install_prefix/bin/subl
-sublime_text_dir=$install_prefix/sublime-text
+install_dir=$install_prefix/sublime-text
 
 if [[ ! -x $bin_path ]]; then
-  # download and unpack program files
-  download "$sublime_text_url" $sublime_text_md5
-  tar xjf "`basename "$sublime_text_url"`"
-  
-  # move program files, change own and create symlink to executable
-  sudo mv Sublime\ Text\ 2 $sublime_text_dir
-  sudo chown root:root -R $sublime_text_dir
-  sudo ln -s $sublime_text_dir/sublime_text $bin_path
+  # download, unpack, move program files and create symlink to executable
+  download "$url" $md5
+  unpack-downloaded "$url"
+  sudo mv ./Sublime\ Text\ 2/ $install_dir
+  sudo ln -s $install_dir/sublime_text $bin_path
 fi
 
 # create .desktop file
@@ -26,7 +23,7 @@ Type=Application
 Name=Sublime Text
 Comment=Sophisticated Text Editor
 Categories=Development;
-Icon=$sublime_text_dir/Icon/128x128/sublime_text.png
+Icon=$install_dir/Icon/128x128/sublime_text.png
 Exec=`basename $bin_path`
 StartupNotify=true
 

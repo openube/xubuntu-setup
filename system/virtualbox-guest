@@ -1,7 +1,6 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-client_path=/usr/bin/VBoxClient-all
 initd_path=/etc/init.d/virtualbox-guest-utils
 
 # install VirtualBox guest packages

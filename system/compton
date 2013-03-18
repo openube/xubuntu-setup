@@ -1,14 +1,14 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-compton_url=https://github.com/chjj/compton/archive/master.zip
-compton_md5=e71c83c11545f2ea4e4a489f22b99d04
+url=https://github.com/chjj/compton/archive/master.zip
+md5=e71c83c11545f2ea4e4a489f22b99d04
 build_deps="libx11-dev libxcomposite-dev libxdamage-dev libxrender-dev libxrandr-dev libdbus-1-dev libconfig-dev libdrm-dev libpcre3-dev libgl1-mesa-dev"
 
 if [[ ! -x /usr/bin/compton ]]; then
-  # download and extract compton sources
-  engine=wget download $compton_url $compton_md5
-  unzip -qo master.zip
+  # download and unpack program sources
+  engine=wget download $url $md5
+  unpack-downloaded $url
 
   # install build time dependencies
   install $build_deps

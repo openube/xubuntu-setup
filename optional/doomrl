@@ -1,11 +1,11 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-app_url=http://doom.chaosforge.org/file_download/25/doomrl-linux-x64-0996.tar.gz
-app_md5=9d3aa84421c6dc900c8a8e7c2619eee2
+url=http://doom.chaosforge.org/file_download/25/doomrl-linux-x64-0996.tar.gz
+md5=9d3aa84421c6dc900c8a8e7c2619eee2
 install_prefix=/usr/local
 bin_path=$install_prefix/games/doomrl
-app_dir=$install_prefix/doomrl
+install_dir=$install_prefix/doomrl
 profile_dir=~/.profiles/doomrl
 
 # install dependencies
@@ -13,14 +13,14 @@ install libsdl-mixer1.2
 
 if [[ ! -x $bin_path ]]; then
   # download, unpack and move program files
-  download $app_url $app_md5
-  unpack-downloaded $app_url
-  user=$USER move ./doomrl-linux-*/ $app_dir
+  download $url $md5
+  unpack-downloaded $url
+  user=$USER move ./doomrl-linux-*/ $install_dir
 fi
 
 # create symlinks to program profile files
 for name in backup config.lua save; do
-  link=$app_dir/$name
+  link=$install_dir/$name
   noconfirm=1 remove $link
   ln -s $profile_dir/$name $link
 done
@@ -28,7 +28,7 @@ done
 # create main executable script
 write-script $bin_path <<EOF
 #!/bin/sh
-cd $app_dir
+cd $install_dir
 ./doomrl "\$@"
 
 EOF

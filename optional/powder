@@ -1,20 +1,20 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-app_url=http://www.zincland.com/powder/release/powder117_linux.tar.gz
-app_md5=d5fe123927ebb04083386cb4f1e5b210
+url=http://www.zincland.com/powder/release/powder117_linux.tar.gz
+md5=d5fe123927ebb04083386cb4f1e5b210
 install_prefix=/usr/local
 bin_path=$install_prefix/games/powder
-app_dir=$install_prefix/powder
+install_dir=$install_prefix/powder
 
 # install x86 version of SDL library
 install libsdl1.2debian:i386
 
 if [[ ! -x $bin_path ]]; then
   # download, unpack, move program files and create symlink to executable
-  download $app_url $app_md5
-  unpack-downloaded $app_url
-  move ./powder*/ $app_dir
-  sudo ln -s $app_dir/powder $bin_path
+  download $url $md5
+  unpack-downloaded $url
+  move ./powder*/ $install_dir
+  sudo ln -s $install_dir/powder $bin_path
 fi
 

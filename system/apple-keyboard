@@ -25,7 +25,6 @@ done
 EOF
 
 # create keyfuzz mapping for Apple keyboards
-sudo mkdir -p `dirname $keyfuzz_path`
 write-file $keyfuzz_path <<EOF
 # L-Alt to L-Super
 458978 125

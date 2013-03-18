@@ -1,13 +1,13 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-phpsh_url=https://github.com/facebook/phpsh/archive/master.zip
-phpsh_md5=b9f6214141951a9311b0ec27ec14a418
+url=https://github.com/facebook/phpsh/archive/master.zip
+md5=b9f6214141951a9311b0ec27ec14a418
 
 if [[ ! -x /usr/local/bin/phpsh ]]; then
-  # download and extract phpsh
-  engine=wget download $phpsh_url $phpsh_md5
-  unzip -qo master.zip
+  # download and unpack program sources
+  engine=wget download $url $md5
+  unpack-downloaded $url
 
   # build phpsh package and install
   pushd phpsh-master

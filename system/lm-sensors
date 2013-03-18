@@ -5,6 +5,7 @@ modules_path=/etc/modules
 
 install lm-sensors
 
+# add coretemp module to /etc/modules
 name=coretemp
 if ! pcregrep -q "^$name$" $modules_path; then
   echo -e "\n# Chip drivers\ncoretemp" | sudo tee -a $modules_path 1>/dev/null

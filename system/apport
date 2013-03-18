@@ -3,6 +3,7 @@
 
 default_path=/etc/default/apport
 
+# disable Apport service
 name=enabled
 value=0
 sudo perl -pe "s/^($name)=\d$/\1=$value/" -i $default_path

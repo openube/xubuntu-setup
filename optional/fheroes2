@@ -1,20 +1,20 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-app_url=http://citylan.dl.sourceforge.net/project/fheroes2/fheroes2/fheroes2-20120514-linux-r2860.tar.gz
-app_md5=f3fc6218e0f6b74bb9ac36a5a5c98dbb
+url=http://citylan.dl.sourceforge.net/project/fheroes2/fheroes2/fheroes2-20120514-linux-r2860.tar.gz
+md5=f3fc6218e0f6b74bb9ac36a5a5c98dbb
 install_prefix=/usr/local
 bin_path=$install_prefix/games/fheroes2
-app_dir=$install_prefix/fheroes2
+install_dir=$install_prefix/fheroes2
 
 # install dependencies
 install libsdl-{mixer,net}1.2
 
 if [[ ! -x $bin_path ]]; then
   # download, unpack, move program files and create symlink to executable
-  download $app_url $app_md5
-  unpack-downloaded $app_url
-  move ./fheroes2/ $app_dir
-  sudo ln -s $app_dir/fheroes2.x86_64 $bin_path
+  download $url $md5
+  unpack-downloaded $url
+  move ./fheroes2/ $install_dir
+  sudo ln -s $install_dir/fheroes2.x86_64 $bin_path
 fi
 

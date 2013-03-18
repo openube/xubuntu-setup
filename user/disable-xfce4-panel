@@ -3,6 +3,7 @@
 
 xml_path=~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
 
+# disable xfce4-panel by removing command from xfce4-session config
 pattern=" name=\"Client2_Command\" type="
 value=array
 perl -pe "s/($pattern)\".+?\"/\1\"$value\"/" -i $xml_path

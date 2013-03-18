@@ -1,12 +1,12 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-dragondisk_url=http://download.dragondisk.com/dragondisk_1.0.5-0ubuntu_amd64.deb
-dragondisk_md5=6206d2d719d3b48b93936b9622784b53
+url=http://download.dragondisk.com/dragondisk_1.0.5-0ubuntu_amd64.deb
+md5=6206d2d719d3b48b93936b9622784b53
 
 if [[ ! -x /usr/bin/dragondisk ]]; then
-  # download and install DragonDisk package
-  download $dragondisk_url $dragondisk_md5
-  sudo gdebi -n `basename $dragondisk_url`
+  # download and install package
+  download $url $md5
+  sudo gdebi -n `basename $url`
 fi
 

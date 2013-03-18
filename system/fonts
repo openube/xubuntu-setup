@@ -11,11 +11,10 @@ echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select tr
 install ttf-mscorefonts-installer
 
 if [[ ! -f $ms_fonts_dir/Tahoma.TTF ]]; then
-  # download and install Tahoma font
+  # download, unpack and move Tahoma font
   # SOURCE: http://wiki.debian.org/tahoma
   download $tahoma_url $tahoma_md5
-
-  cabextract `basename $tahoma_url`
+  format=cab unpack-downloaded $tahoma_url
   sudo mv Tahoma*.TTF $ms_fonts_dir
 fi
 

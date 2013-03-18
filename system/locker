@@ -1,7 +1,10 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
+# install locker components
 install i3lock
 install xautolock
+
+# install preinstalled xscreensaver packages
 uninstall xscreensaver xscreensaver-data xscreensaver-gl
 

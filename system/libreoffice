@@ -2,5 +2,5 @@
 . `dirname $0`/../library/script
 
 install libreoffice-{writer,calc,gnome}
-install hunspell-{en-us,ru} mythes-{en-us,ru}
+install hunspell-{en-us,ru} mythes-{en-us,ru} # language libraries
 

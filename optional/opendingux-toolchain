@@ -1,14 +1,14 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-app_url=http://www.treewalker.org/opendingux/opendingux-toolchain.2012-06-16.tar.bz2
-app_md5=97adec736b4dc08d0c0930d8400a9e76
-app_dir=/opt/opendingux-toolchain
+url=http://www.treewalker.org/opendingux/opendingux-toolchain.2012-06-16.tar.bz2
+md5=97adec736b4dc08d0c0930d8400a9e76
+install_dir=/opt/opendingux-toolchain
 
-if [[ ! -d $app_dir ]]; then
+if [[ ! -d $install_dir ]]; then
   # download, unpack and move program files
-  download $app_url $app_md5
-  unpack-downloaded $app_url
-  move ./opendingux-toolchain $app_dir
+  download $url $md5
+  unpack-downloaded $url
+  move ./opendingux-toolchain $install_dir
 fi
 

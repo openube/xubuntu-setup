@@ -1,14 +1,14 @@
 #!/bin/bash -eu
 . `dirname $0`/../library/script
 
-xcape_url=https://github.com/alols/xcape/archive/master.zip
-xcape_md5=eeb2ba971f82d2a13519472d4cbe7d1d
+url=https://github.com/alols/xcape/archive/master.zip
+md5=eeb2ba971f82d2a13519472d4cbe7d1d
 build_deps="libx11-dev libxtst-dev"
 
 if [[ ! -x /usr/bin/xcape ]]; then
-  # download and extract xcape sources
-  engine=wget download $xcape_url $xcape_md5
-  unzip -qo master.zip
+  # download and unpack program sources
+  engine=wget download $url $md5
+  unpack-downloaded $url
   
   # install build time dependencies
   install $build_deps

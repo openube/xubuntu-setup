@@ -88,7 +88,7 @@ download() {
   basename=`basename "$url"`
   output=${3:-$basename}
 
-  if [[ ! -f "$output" || `md5sum "$output" | cut -d' ' -f1` != "$md5" ]]; then
+  if [[ ! -f "$output" || `md5sum "$output" 2>/dev/null | cut -d' ' -f1` != "$md5" ]]; then
     rm -f "$output"
 
     # download the file using the preferred download command
@@ -135,9 +135,13 @@ write-script() {
 # unpack archives of various format
 unpack() {
   for path in "$@"; do
-    case $path in
-      *.tar.gz) tar xzf "$path" ;;
+    _path=$path
+    [[ -n ${format:-} ]] && _path=.$format
+    case $_path in
+      *.tar.gz | *.tgz) tar xzf "$path" ;;
       *.tar.bz2) tar xjf "$path" ;;
+      *.zip) unzip -qo "$path" ;;
+      *.cab) cabextract "$path" ;;
       *) echo "Unknown extension for unpack: $extension"; exit 1 ;;
     esac
   done
@@ -169,6 +173,10 @@ move() {
   source=$1
   dest=$2
 
+  # check if destination contains trailing slash
+  [[ $dest == */ ]] && dest="$dest`basename "$source"`"
+  
+  # remove destination, move source to destination and change owner
   remove "$dest"
   sudo mv "$source" "$dest"
   user=${user:-root}
