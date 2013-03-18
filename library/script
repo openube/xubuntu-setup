@@ -23,24 +23,26 @@ trap on-exit EXIT
 
 # install packages silently if they were not installed already
 install() {
+  # build list of packages to install that were not yet installed 
   local packages=
-  local options=
+  local args=
   for arg in $@; do
     if [[ $arg == -* ]]; then
-      options="$options $arg"
+      args="$args $arg"
     else
       version=`dpkg-query -W -f '${Version}' $arg 2>/dev/null || true`
       [[ -z $version ]] && packages="$packages $arg"
     fi
   done
 
-  args=
-  [[ -n ${NON_INTERACTIVE:-} ]] && args="-y"
-  [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install $args $options $packages || true
+  # install packages from list using apt-get
+  [[ -n ${NON_INTERACTIVE:-} ]] && args="-y $args"
+  [[ -n $packages ]] && DEBIAN_FRONTEND=noninteractive sudo -E apt-get install $args $packages || true
 }
 
 # purge packages silently only if they are installed
 uninstall() {
+  # build list of packages to remove that are installed
   packages=""
   for p in $@; do
     version=`dpkg-query -W -f '${Version}' $p 2>/dev/null || true`
@@ -48,6 +50,7 @@ uninstall() {
   done
 
   if [[ -n $packages ]]; then
+    # remove packages from list using apt-get
     args=
     [[ -n ${NON_INTERACTIVE:-} ]] && args="-y"
     sudo apt-get purge $args $packages
@@ -78,7 +81,7 @@ add-ppa() {
   fi
 }
 
-# download the file using axel if it was not downloaded already
+# download the file if it was not downloaded already
 download() {
   url=$1
   md5=$2
@@ -88,6 +91,7 @@ download() {
   if [[ ! -f "$output" || `md5sum "$output" | cut -d' ' -f1` != "$md5" ]]; then
     rm -f "$output"
 
+    # download the file using the preferred download command
     case ${engine:-} in
       wget) download_cmd="wget -O" ;;
       '') download_cmd="axel -a -n3 -o" ;;
@@ -128,7 +132,7 @@ write-script() {
   executable=1 write-file "$@"
 }
 
-# unpack archives
+# unpack archives of various format
 unpack() {
   for path in "$@"; do
     case $path in
