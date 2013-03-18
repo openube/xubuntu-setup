@@ -24,21 +24,3 @@ if [[ ! -x $bin_path ]]; then
   sudo ln -s $powder_dir/`basename $bin_path` $bin_path
 fi
 
-exit
-
-# build_deps=libsdl1.2-dev
-
-uninstall $build_deps
-exit
-
-
-  # install build time dependencies
-  install $build_deps
-
-  # pushd xcape-master
-  #   # build POWDER game
-  # popd
-
-  # # uninstall build time dependencies
-  # uninstall $build_deps
-
