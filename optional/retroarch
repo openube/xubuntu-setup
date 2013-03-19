@@ -1,0 +1,13 @@
+#!/bin/bash -eu
+. `dirname $0`/../library/script
+
+# install RetroArch packages from PPA
+add-ppa hunter-kaller/ppa
+install retroarch
+install retroarch-phoenix # GUI
+install libretro-gambatte # Game Boy emulator
+install libretro-meteor # Game Boy Advance emulator
+
+# symlink missing icon
+sudo ln -sf /usr/share/{pixmaps,icons}/retroarch-phoenix.png
+
