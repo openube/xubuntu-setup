@@ -2,6 +2,7 @@
 . `dirname $0`/../library/script
 
 packages="
+bpt
 Skype4Py
 pyradio
 "
