@@ -37,6 +37,8 @@ acpi
 subversion
 ncftp
 transmission-cli
+tig
+pydf
 
 # GUI soft
 dconf-tools
