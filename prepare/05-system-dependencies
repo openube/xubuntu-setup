@@ -5,5 +5,5 @@
 install axel gdebi-core xmlstarlet # utils
 install checkinstall pkg-config # build
 install cabextract # unarchivers
-install python-pip ruby # script languages and package managers
+install python-pip ruby-bundler # script languages and package managers
 
