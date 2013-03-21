@@ -10,8 +10,9 @@ if [[ ! -x /usr/local/bin/vmail ]]; then
   # install build dependencies
   install $build_deps
   
-  # install gem
+  # install gem and remove spec cache
   sudo gem install vmail
+  rm -r ~/.gem
   
   # uninstall build dependencies
   uninstall $build_deps
